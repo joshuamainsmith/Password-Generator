@@ -32,7 +32,6 @@ String generateWords(int num)
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
   MyAppState createState() => MyAppState();
 }
@@ -44,11 +43,14 @@ class MyAppState extends State<MyApp> {
   bool _isWithSpecial = false;
   bool _isWithWords = true;
   bool _isWithSpaces = true;
+  bool isSwitched = true;
+  bool _isAdvanced = false;
   double _numberCharPassword = 5;
   String newPassword = '';
   String _labelText = "Enter Number of Words Here";
   Color _color = Colors.blue;
   String isOk = '';
+  String strAdvanced = 'Show Advanced Settings';
   final TextEditingController _passwordLength = TextEditingController();
   final password = RandomPasswordGenerator();
   @override
@@ -56,12 +58,83 @@ class MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  toggleSpaces(String name, Function(bool?)? onTap, bool value)
+  {
+    if (isSwitched)
+      {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(name, style: TextStyle(color: Colors.black)),
+            Checkbox(value: value, onChanged: onTap/*null/onTap*/),
+          ],
+        );
+      }
+    else
+      {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(name, style: TextStyle(color: Colors.grey)),
+            Checkbox(value: value, onChanged: null/*null/onTap*/),
+          ],
+        );
+      }
+  }
+
   checkBox(String name, Function(bool?)? onTap, bool value) {
+    if (isSwitched && name != strAdvanced)
+      {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(name, style: TextStyle(color: Colors.grey)),
+            Checkbox(value: value, onChanged: null/*null/onTap*/),
+          ],
+        );
+      }
+    else
+      {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(name, style: TextStyle(color: Colors.black)),
+            Checkbox(value: value, onChanged: onTap/*null/onTap*/),
+          ],
+        );
+      }
+  }
+
+  checkSwitch(String name) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(name),
-        Checkbox(value: value, onChanged: onTap),
+        Switch(
+          value: isSwitched,
+          onChanged: (value) {
+            setState(() {
+              isSwitched = value;
+              if (kDebugMode) {
+                print(isSwitched);
+              }
+              if (!isSwitched)
+              {
+                _labelText = "Enter Number of Characters Here";
+              }
+              else
+              {
+                _labelText = "Enter Number of Words Here";
+                _isWithLetters = false;
+                _isWithUppercase = false;
+                _isWithNumbers = false;
+                _isWithSpecial = false;
+              }
+            });
+          },
+          activeTrackColor: Colors.lightGreenAccent,
+          activeColor: Colors.green,
+        ),
       ],
     );
   }
@@ -72,7 +145,7 @@ class MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.indigo,
           title: const Text('Random Password Generator'),
         ),
         body: Center(
@@ -81,7 +154,39 @@ class MyAppState extends State<MyApp> {
                 const SizedBox(
                   height: 10,
                 ),
-                /*Row(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    checkBox(strAdvanced, (bool? value) {
+                      _isAdvanced = value!;
+                      setState(() {
+                      });
+                    }, _isAdvanced),
+                  ],
+                ),
+                if (_isAdvanced)
+                const SizedBox(
+                  height: 10,
+                ),
+                /* Comment start*/
+                if (_isAdvanced)
+                  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    checkSwitch('Words'),
+                    toggleSpaces('Spaces', (bool? value) {
+                      _isWithSpaces = value!;
+                      setState(() {});
+                    }, _isWithSpaces)
+                  ],
+                ),
+
+                /*
+                const SizedBox(
+                  height: 10,
+                ),
+                /* Comment start*/
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     checkBox('Words', (bool? value) {
@@ -108,58 +213,51 @@ class MyAppState extends State<MyApp> {
                     }, _isWithSpaces)
                   ],
                 ),
-                const SizedBox(
+                */
+                if (_isAdvanced)
+                  const SizedBox(
                   height: 10,
                 ),
-                Row(
+                if (_isAdvanced)
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    checkBox('Upper Case', (bool? value) {
+                      checkBox('Upper Case', (bool? value) {
                       _isWithUppercase = value!;
                       setState(() {
-                        if (_isWithWords)
-                        {
-                          _isWithUppercase = false;
-                        }
                       });
                     }, _isWithUppercase),
                     checkBox('Lower Case', (bool? value) {
                       _isWithLetters = value!;
                       setState(() {
-                        if (_isWithWords)
-                        {
-                          _isWithLetters = false;
-                        }
                       });
                     }, _isWithLetters)
                   ],
                 ),
-                const SizedBox(
+                if (_isAdvanced)
+                  const SizedBox(
                   height: 10,
                 ),
-                Row(
+                if (_isAdvanced)
+                  Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     checkBox('Symbols', (bool? value) {
                       _isWithSpecial = value!;
                       setState(() {
-                        if (_isWithWords)
-                        {
-                          _isWithSpecial = false;
-                        }
+
                       });
                     }, _isWithSpecial),
                     checkBox('Numbers', (bool? value) {
                       _isWithNumbers = value!;
                       setState(() {
-                        if (_isWithWords)
-                        {
-                          _isWithNumbers = false;
-                        }
+
                       });
                     }, _isWithNumbers)
                   ],
-                ),*/
+                ),
+                /* Comment end*/
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -175,7 +273,7 @@ class MyAppState extends State<MyApp> {
                       filled: true,
                       fillColor: Colors.grey[300],
                        labelText: _labelText,
-                      labelStyle: const TextStyle(color: Colors.blue),
+                      labelStyle: const TextStyle(color: Colors.indigo),
                     ),
                     keyboardType: TextInputType.number,
                   ),
@@ -189,6 +287,10 @@ class MyAppState extends State<MyApp> {
                         _numberCharPassword =
                             double.parse(_passwordLength.text.trim());
                       }
+                      else
+                        {
+                          _numberCharPassword = 5;
+                        }
 
                       generateWords(_numberCharPassword.toInt());
 
@@ -203,13 +305,17 @@ class MyAppState extends State<MyApp> {
                         print(newPassword);
                       }
 
-                      if (!_isWithWords)
+                      if (!isSwitched)
                         {
                           pass = newPassword;
                         }
                       if (!_isWithSpaces)
                         {
                           pass = pass.replaceAll(' ', '');
+                        }
+                      if (!_isWithUppercase)
+                        {
+                          pass = pass.toLowerCase();
                         }
 
                       double passwordstrength =
@@ -219,10 +325,10 @@ class MyAppState extends State<MyApp> {
                           _color = Colors.red;
                           isOk = 'This password is less than 15 characters!';
                         }
-                      else if (passwordstrength < 0.3) {
+                      else if (passwordstrength < 0.7) {
                         _color = Colors.red;
                         isOk = 'This password is weak!';
-                      } else if (passwordstrength < 0.7) {
+                      } else if (passwordstrength < 0.9) {
                         _color = Colors.blue;
                         isOk = 'This password is Good';
                       } else {
@@ -287,10 +393,10 @@ class MyAppState extends State<MyApp> {
                         width: 100,
                         height: 50,
                         decoration: BoxDecoration(
-                            color: Colors.blue,
+                            color: Colors.indigo,
                             borderRadius: BorderRadius.circular(15)
                         ),
-                        child: const Center(child: Text('COPY')),
+                        child: const Center(child: Text('COPY', style: TextStyle(color: Colors.white),)),
                       ),
                     )
                   ],
