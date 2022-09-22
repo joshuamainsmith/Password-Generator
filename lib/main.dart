@@ -277,6 +277,7 @@ class MyAppState extends State<MyApp> {
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextField(
+                    style: TextStyle(color: Colors.black),
                     controller: _passwordLength,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
