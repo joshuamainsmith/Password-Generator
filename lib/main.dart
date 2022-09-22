@@ -383,7 +383,7 @@ class MyAppState extends State<MyApp> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             pass,
-                            style: TextStyle(color: Colors.white, fontSize: 25),
+                            style: TextStyle(fontSize: 25),
                           ),
                         ),
                       )),
