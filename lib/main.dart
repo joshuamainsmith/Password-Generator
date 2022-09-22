@@ -65,7 +65,7 @@ class MyAppState extends State<MyApp> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(name, style: TextStyle(color: Colors.black)),
+            Text(name, style: TextStyle(color: Colors.white)),
             Checkbox(value: value, onChanged: onTap/*null/onTap*/),
           ],
         );
@@ -98,7 +98,7 @@ class MyAppState extends State<MyApp> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(name, style: TextStyle(color: Colors.black)),
+            Text(name, style: TextStyle(color: Colors.white)),
             Checkbox(value: value, onChanged: onTap/*null/onTap*/),
           ],
         );
@@ -142,6 +142,19 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+        brightness: Brightness.light,
+        /* light theme settings */
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        /* dark theme settings */
+      ),
+      themeMode: ThemeMode.dark,
+      /* ThemeMode.system to follow system theme,
+         ThemeMode.light for light theme,
+         ThemeMode.dark for dark theme
+      */
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -369,7 +382,7 @@ class MyAppState extends State<MyApp> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             pass,
-                            style: TextStyle(color: Colors.black, fontSize: 25),
+                            style: TextStyle(color: Colors.white, fontSize: 25),
                           ),
                         ),
                       )),
