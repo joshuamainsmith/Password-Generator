@@ -65,7 +65,7 @@ class MyAppState extends State<MyApp> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(name, style: TextStyle(color: Colors.white)),
+            Text(name),
             Checkbox(value: value, onChanged: onTap/*null/onTap*/),
           ],
         );
@@ -98,7 +98,7 @@ class MyAppState extends State<MyApp> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(name, style: TextStyle(color: Colors.white)),
+            Text(name),
             Checkbox(value: value, onChanged: onTap/*null/onTap*/),
           ],
         );
@@ -150,7 +150,7 @@ class MyAppState extends State<MyApp> {
         brightness: Brightness.dark,
         /* dark theme settings */
       ),
-      themeMode: ThemeMode.dark,
+      themeMode: ThemeMode.system,
       /* ThemeMode.system to follow system theme,
          ThemeMode.light for light theme,
          ThemeMode.dark for dark theme
